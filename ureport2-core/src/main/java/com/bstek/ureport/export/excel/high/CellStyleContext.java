@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -61,7 +61,7 @@ public class CellStyleContext {
 			}
 		}
 	}
-	
+
 	private XSSFCellStyle createNewCellStyle(SXSSFWorkbook wb,Cell cell) {
 		CellStyle cellStyle=cell.getCellStyle();
 		CellStyle customStyle=cell.getCustomCellStyle();
@@ -91,7 +91,7 @@ public class CellStyleContext {
 			BorderStyle borderStyle=getBorderStyle(topBorder);
 			XSSFColor borderColor=buildXSSFColor(topBorder.getColor());
 			style.setTopBorderColor(borderColor);
-			style.setBorderTop(borderStyle);        				
+			style.setBorderTop(borderStyle);
 		}
 		Border bottomBorder=cellStyle.getBottomBorder();
 		if(customStyle!=null && customStyle.getBottomBorder()!=null){
@@ -101,7 +101,7 @@ public class CellStyleContext {
 			BorderStyle borderStyle=getBorderStyle(bottomBorder);
 			XSSFColor borderColor=buildXSSFColor(bottomBorder.getColor());
 			style.setBottomBorderColor(borderColor);
-			style.setBorderBottom(borderStyle);        				
+			style.setBorderBottom(borderStyle);
 		}
 		Border leftBorder=cellStyle.getLeftBorder();
 		if(customStyle!=null && customStyle.getLeftBorder()!=null){
@@ -111,7 +111,7 @@ public class CellStyleContext {
 			BorderStyle borderStyle=getBorderStyle(leftBorder);
 			XSSFColor borderColor=buildXSSFColor(leftBorder.getColor());
 			style.setLeftBorderColor(borderColor);
-			style.setBorderLeft(borderStyle);        				
+			style.setBorderLeft(borderStyle);
 		}
 		Border rightBorder=cellStyle.getRightBorder();
 		if(customStyle!=null && customStyle.getRightBorder()!=null){
@@ -121,7 +121,7 @@ public class CellStyleContext {
 			BorderStyle borderStyle=getBorderStyle(rightBorder);
 			XSSFColor borderColor=buildXSSFColor(rightBorder.getColor());
 			style.setRightBorderColor(borderColor);
-			style.setBorderRight(borderStyle);        				
+			style.setBorderRight(borderStyle);
 		}
 		Alignment align=cellStyle.getAlign();
 		if(customStyle!=null && customStyle.getAlign()!=null){
@@ -139,7 +139,7 @@ public class CellStyleContext {
 			}else if(align.equals(Alignment.center)){
 				style.setAlignment(HorizontalAlignment.CENTER);
 			}else if(align.equals(Alignment.right)){
-				style.setAlignment(HorizontalAlignment.RIGHT);        				
+				style.setAlignment(HorizontalAlignment.RIGHT);
 			}
 		}
 		Alignment valign=cellStyle.getValign();
@@ -184,7 +184,7 @@ public class CellStyleContext {
 			bold=colStyle.getBold();
 		}
 		if(bold!=null){
-			font.setBold(bold);			
+			font.setBold(bold);
 		}
 		Boolean italic=cellStyle.getItalic();
 		if(customStyle!=null && customStyle.getItalic()!=null){
@@ -197,7 +197,7 @@ public class CellStyleContext {
 			italic=colStyle.getItalic();
 		}
 		if(italic!=null){
-			font.setItalic(italic);			
+			font.setItalic(italic);
 		}
 		Boolean underline=cellStyle.getUnderline();
 		if(customStyle!=null && customStyle.getUnderline()!=null){
@@ -210,7 +210,7 @@ public class CellStyleContext {
 			underline=colStyle.getUnderline();
 		}
 		if(underline!=null && underline){
-			font.setUnderline((byte)1);						
+			font.setUnderline((byte)1);
 		}
 		String forecolor=cellStyle.getForecolor();
 		if(customStyle!=null && customStyle.getForecolor()!=null){
@@ -237,12 +237,12 @@ public class CellStyleContext {
 			fontFamily=colStyle.getFontFamily();
 		}
 		if(fontFamily!=null){
-			font.setFontName(fontFamily);			
+			font.setFontName(fontFamily);
 		}
 		style.setFont(font);
 		return style;
 	}
-	
+
 	private BorderStyle getBorderStyle(Border border){
 		if(border.getStyle().equals(com.bstek.ureport.definition.BorderStyle.solid)){
 			return BorderStyle.THIN;
@@ -253,14 +253,14 @@ public class CellStyleContext {
 		}
 		return null;
 	}
-	
+
 	private XSSFColor buildXSSFColor(String colorStr){
 		String[] color=colorStr.split(",");
 		Color c=new Color(Integer.valueOf(color[0]),Integer.valueOf(color[1]),Integer.valueOf(color[2]));
-		XSSFColor xssfColor=new XSSFColor(c);
+		XSSFColor xssfColor=new XSSFColor(c,null);
 		return xssfColor;
 	}
-	
+
 	private String buildStyleId(Cell cell){
 		CellStyle customStyle=cell.getCustomCellStyle();
 		CellStyle rowStyle=cell.getRow().getCustomCellStyle();
@@ -286,7 +286,7 @@ public class CellStyleContext {
 		}
 		Border leftBorder=customStyle!=null ? customStyle.getLeftBorder() : null;
 		if(leftBorder!=null){
-			sb.append("leftborder:"+buildBorderStyleId(leftBorder));  				
+			sb.append("leftborder:"+buildBorderStyleId(leftBorder));
 		}
 		Border rightBorder=customStyle!=null ? customStyle.getRightBorder() : null;
 		if(rightBorder!=null){
@@ -347,7 +347,7 @@ public class CellStyleContext {
 		if(colStyle!=null && colStyle.getItalic()!=null){
 			italic=colStyle.getItalic();
 		}
-		sb.append("italic:"+italic);	
+		sb.append("italic:"+italic);
 		String forecolor=customStyle!=null ? customStyle.getForecolor() : null;
 		if(rowStyle!=null && rowStyle.getForecolor()!=null){
 			forecolor=rowStyle.getForecolor();
@@ -374,7 +374,7 @@ public class CellStyleContext {
 		sb.append("font-size:"+fontSize);
 		return sb.toString();
 	}
-	
+
 	private String buildBorderStyleId(Border border){
 		StringBuilder sb=new StringBuilder();
 		if(border.getStyle()!=null){

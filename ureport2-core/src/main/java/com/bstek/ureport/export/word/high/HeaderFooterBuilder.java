@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -49,7 +49,7 @@ public class HeaderFooterBuilder {
 	public void build(XWPFDocument document,CTSectPr sectPr,Report report){
 		//HeaderFooterDefinition headerDef=report.getHeader();
 		//HeaderFooterDefinition footerDef=report.getFooter();
-		
+
 		HeaderFooter header=new HeaderFooter();
 		HeaderFooter footer=new HeaderFooter();
 		XWPFHeaderFooterPolicy headerFooterPolicy=null;
@@ -57,7 +57,7 @@ public class HeaderFooterBuilder {
 			List<XWPFParagraph> list=buildXWPFParagraph(header, document);
 			XWPFParagraph[] newparagraphs = new XWPFParagraph[list.size()];
 			list.toArray(newparagraphs);
-			headerFooterPolicy = new XWPFHeaderFooterPolicy(document, sectPr);									
+			headerFooterPolicy = new XWPFHeaderFooterPolicy(document, sectPr);
 			headerFooterPolicy.createHeader(STHdrFtr.DEFAULT, newparagraphs);
 		}
 		if(footer!=null){
@@ -70,11 +70,11 @@ public class HeaderFooterBuilder {
 			headerFooterPolicy.createFooter(STHdrFtr.DEFAULT, newparagraphs);
 		}
 	}
-	
+
 	private List<XWPFParagraph> buildXWPFParagraph(HeaderFooter hf,XWPFDocument document){
 		CTP ctp = null;
 		List<XWPFParagraph> paras=new ArrayList<XWPFParagraph>();
-		XWPFParagraph para=null;		
+		XWPFParagraph para=null;
 		XWPFRun r1 = null;
 		String left=hf.getLeft();
 		String center=hf.getCenter();
@@ -85,7 +85,7 @@ public class HeaderFooterBuilder {
 		String date=dateSD.format(D);
 		String time=timeSD.format(D);
 		if(StringUtils.isNotBlank(left)){
-			ctp = CTP.Factory.newInstance();				
+			ctp = CTP.Factory.newInstance();
 			para=new XWPFParagraph(ctp, document);
 			para.setAlignment(ParagraphAlignment.LEFT);
 			paras.add(para);
@@ -103,7 +103,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -117,7 +117,7 @@ public class HeaderFooterBuilder {
 						r1.setItalic(true);
 					}
 					fldChar = r1.getCTR().addNewFldChar();
-					fldChar.setFldCharType(STFldCharType.Enum.forString("end"));					
+					fldChar.setFldCharType(STFldCharType.Enum.forString("end"));
 				}else if(text.equals("$[PAGES]")){
 					r1 = para.createRun();
 				    CTFldChar fldChar = r1.getCTR().addNewFldChar();
@@ -129,7 +129,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -151,7 +151,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -171,7 +171,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -191,7 +191,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -208,7 +208,7 @@ public class HeaderFooterBuilder {
 			}
 		}
 		if(StringUtils.isNotBlank(center)){
-			ctp = CTP.Factory.newInstance();				
+			ctp = CTP.Factory.newInstance();
 			para=new XWPFParagraph(ctp, document);
 			para.setAlignment(ParagraphAlignment.CENTER);
 			paras.add(para);
@@ -226,7 +226,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -240,7 +240,7 @@ public class HeaderFooterBuilder {
 						r1.setItalic(true);
 					}
 					fldChar = r1.getCTR().addNewFldChar();
-					fldChar.setFldCharType(STFldCharType.Enum.forString("end"));					
+					fldChar.setFldCharType(STFldCharType.Enum.forString("end"));
 				}else if(text.equals("$[PAGES]")){
 					r1 = para.createRun();
 				    CTFldChar fldChar = r1.getCTR().addNewFldChar();
@@ -252,7 +252,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -274,7 +274,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -294,7 +294,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -314,7 +314,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -331,7 +331,7 @@ public class HeaderFooterBuilder {
 			}
 		}
 		if(StringUtils.isNotBlank(right)){
-			ctp = CTP.Factory.newInstance();				
+			ctp = CTP.Factory.newInstance();
 			para=new XWPFParagraph(ctp, document);
 			para.setAlignment(ParagraphAlignment.RIGHT);
 			paras.add(para);
@@ -349,7 +349,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -363,7 +363,7 @@ public class HeaderFooterBuilder {
 						r1.setItalic(true);
 					}
 					fldChar = r1.getCTR().addNewFldChar();
-					fldChar.setFldCharType(STFldCharType.Enum.forString("end"));					
+					fldChar.setFldCharType(STFldCharType.Enum.forString("end"));
 				}else if(text.equals("$[PAGES]")){
 					r1 = para.createRun();
 				    CTFldChar fldChar = r1.getCTR().addNewFldChar();
@@ -375,7 +375,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -397,7 +397,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -417,7 +417,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -437,7 +437,7 @@ public class HeaderFooterBuilder {
 						r1.setFontSize(hf.getFontSize());
 					}
 					CTRPr rpr = r1.getCTR().isSetRPr() ? r1.getCTR().getRPr() : r1.getCTR().addNewRPr();
-					CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+					CTFonts fonts = rpr.sizeOfRFontsArray() > 0 ? rpr.getRFontsArray(0) : rpr.addNewRFonts();
 					String fontName=hf.getFontFamily();
 					if(fontName!=null){
 						fonts.setAscii(fontName);
@@ -455,7 +455,7 @@ public class HeaderFooterBuilder {
 		}
 		return paras;
 	}
-	
+
 	private List<String> splitHeaderFooterContent(String info){
 		Pattern pattern = Pattern.compile("\\$\\[PAGE\\]|\\$\\[PAGES\\]|\\$\\[DATE\\]|\\$\\[TIME\\]");
 		Matcher matcher = pattern.matcher(info);
@@ -474,5 +474,5 @@ public class HeaderFooterBuilder {
 		}
 		return list;
 	}
-	
+
 }

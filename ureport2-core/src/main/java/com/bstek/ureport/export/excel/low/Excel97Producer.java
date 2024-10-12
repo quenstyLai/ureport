@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -37,8 +37,8 @@ import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.util.Units;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFShape;
 
 import com.bstek.ureport.Utils;
 import com.bstek.ureport.build.paging.Page;
@@ -68,7 +68,7 @@ public class Excel97Producer {
 	public void produceWithSheet(Report report, OutputStream outputStream) {
 		doProduce(report, outputStream, true,true);
 	}
-	
+
 	private void doProduce(Report report, OutputStream outputStream,boolean withPaging,boolean withSheet) {
 		CellStyleContext cellStyleContext=new CellStyleContext();
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -88,7 +88,7 @@ public class Excel97Producer {
 						sheet=createSheet(wb, paper, "第"+pageIndex+"页");
 						rowNumber=0;
 					}else if(sheet==null){
-						sheet=createSheet(wb, paper, null);						
+						sheet=createSheet(wb, paper, null);
 					}
 					pageIndex++;
 					Drawing<?> drawing=sheet.createDrawingPatriarch();
@@ -157,7 +157,7 @@ public class Excel97Producer {
 			        		Object obj=cellInfo.getFormatData();
 			        		if(obj!=null){
 				        		if(obj instanceof String){
-				        			cell.setCellValue((String)obj);     
+				        			cell.setCellValue((String)obj);
 				        			cell.setCellType(CellType.STRING);
 				        		}else if(obj instanceof Number){
 				        			BigDecimal bigDecimal=Utils.toBigDecimal(obj);
@@ -183,10 +183,10 @@ public class Excel97Producer {
 				        				anchor.setCol2(i+colSpan);
 				        				anchor.setRow1(rowNumber);
 				        				anchor.setRow2(rowNumber+rowSpan);
-				        				anchor.setDx1(0 * XSSFShape.EMU_PER_PIXEL);
-				        				anchor.setDx2(width * XSSFShape.EMU_PER_PIXEL);
-				        				anchor.setDy1(0 * XSSFShape.EMU_PER_PIXEL);
-				        				anchor.setDy2(height * XSSFShape.EMU_PER_PIXEL);
+				        				anchor.setDx1(0 * Units.EMU_PER_PIXEL);
+				        				anchor.setDx2(width * Units.EMU_PER_PIXEL);
+				        				anchor.setDy1(0 * Units.EMU_PER_PIXEL);
+				        				anchor.setDy2(height * Units.EMU_PER_PIXEL);
 				        				drawing.createPicture(anchor, pictureIndex);
 				        			}finally{
 				        				IOUtils.closeQuietly(inputStream);
@@ -211,10 +211,10 @@ public class Excel97Producer {
 				        					anchor.setCol2(i+colSpan);
 				        					anchor.setRow1(rowNumber);
 				        					anchor.setRow2(rowNumber+rowSpan);
-				        					anchor.setDx1(0 * XSSFShape.EMU_PER_PIXEL);
-				        					anchor.setDx2(width * XSSFShape.EMU_PER_PIXEL);
-				        					anchor.setDy1(0 * XSSFShape.EMU_PER_PIXEL);
-				        					anchor.setDy2(height * XSSFShape.EMU_PER_PIXEL);
+				        					anchor.setDx1(0 * Units.EMU_PER_PIXEL);
+				        					anchor.setDx2(width * Units.EMU_PER_PIXEL);
+				        					anchor.setDy1(0 * Units.EMU_PER_PIXEL);
+				        					anchor.setDy2(height * Units.EMU_PER_PIXEL);
 				        					drawing.createPicture(anchor, pictureIndex);
 				        				}finally{
 				        					IOUtils.closeQuietly(inputStream);
@@ -226,8 +226,8 @@ public class Excel97Producer {
 			        		}
 			        	}
 			        	row.setHeight((short)UnitUtils.pointToTwip(r.getHeight()));
-			        	rowNumber++;	        		
-					}      		
+			        	rowNumber++;
+					}
 					sheet.setRowBreak(rowNumber-1);
 				}
 			}else{
@@ -309,7 +309,7 @@ public class Excel97Producer {
 		        		Object obj=cellInfo.getFormatData();
 		        		if(obj!=null){
 			        		if(obj instanceof String){
-			        			cell.setCellValue((String)obj);     
+			        			cell.setCellValue((String)obj);
 			        			cell.setCellType(CellType.STRING);
 			        		}else if(obj instanceof Number){
 			        			BigDecimal bigDecimal=Utils.toBigDecimal(obj);
@@ -335,10 +335,10 @@ public class Excel97Producer {
 			        				anchor.setCol2(i+colSpan);
 			        				anchor.setRow1(rowNumber);
 			        				anchor.setRow2(rowNumber+rowSpan);
-			        				anchor.setDx1(0 * XSSFShape.EMU_PER_PIXEL);
-			        				anchor.setDx2(width * XSSFShape.EMU_PER_PIXEL);
-			        				anchor.setDy1(0 * XSSFShape.EMU_PER_PIXEL);
-			        				anchor.setDy2(height * XSSFShape.EMU_PER_PIXEL);
+			        				anchor.setDx1(0 * Units.EMU_PER_PIXEL);
+			        				anchor.setDx2(width * Units.EMU_PER_PIXEL);
+			        				anchor.setDy1(0 * Units.EMU_PER_PIXEL);
+			        				anchor.setDy2(height * Units.EMU_PER_PIXEL);
 			        				drawing.createPicture(anchor, pictureIndex);
 			        			}finally{
 			        				IOUtils.closeQuietly(inputStream);
@@ -363,10 +363,10 @@ public class Excel97Producer {
 			        					anchor.setCol2(i+colSpan);
 			        					anchor.setRow1(rowNumber);
 			        					anchor.setRow2(rowNumber+rowSpan);
-			        					anchor.setDx1(0 * XSSFShape.EMU_PER_PIXEL);
-			        					anchor.setDx2(width * XSSFShape.EMU_PER_PIXEL);
-			        					anchor.setDy1(0 * XSSFShape.EMU_PER_PIXEL);
-			        					anchor.setDy2(height * XSSFShape.EMU_PER_PIXEL);
+			        					anchor.setDx1(0 * Units.EMU_PER_PIXEL);
+			        					anchor.setDx2(width * Units.EMU_PER_PIXEL);
+			        					anchor.setDy1(0 * Units.EMU_PER_PIXEL);
+			        					anchor.setDy2(height * Units.EMU_PER_PIXEL);
 			        					drawing.createPicture(anchor, pictureIndex);
 			        				}finally{
 			        					IOUtils.closeQuietly(inputStream);
@@ -378,11 +378,11 @@ public class Excel97Producer {
 		        		}
 		        	}
 		        	row.setHeight((short)UnitUtils.pointToTwip(r.getRealHeight()));
-		        	rowNumber++;	        		
-				}      		
+		        	rowNumber++;
+				}
 				sheet.setRowBreak(rowNumber-1);
 			}
-			wb.write(outputStream);			
+			wb.write(outputStream);
 		}catch(Exception ex){
 			throw new ReportComputeException(ex);
 		}finally{
@@ -393,12 +393,12 @@ public class Excel97Producer {
 			}
 		}
 	}
-	
+
 	private Sheet createSheet(HSSFWorkbook wb,Paper paper,String name){
 		Sheet sheet = null;
 		if(name==null){
 			sheet=wb.createSheet();
-		}else{			
+		}else{
 			sheet=wb.createSheet(name);
 		}
 		PaperType paperType=paper.getPaperType();
@@ -444,7 +444,7 @@ public class Excel97Producer {
 			case A2:
 				printSetup.setPaperSize(HSSFPrintSetup.A4_EXTRA_PAPERSIZE);
 				break;
-			case A3:				
+			case A3:
 				printSetup.setPaperSize(HSSFPrintSetup.A3_PAPERSIZE);
 				setup=true;
 				break;

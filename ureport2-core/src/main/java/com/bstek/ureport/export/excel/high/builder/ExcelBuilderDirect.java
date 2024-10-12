@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -34,10 +34,10 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.util.Units;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFShape;
 
 import com.bstek.ureport.Utils;
 import com.bstek.ureport.chart.ChartData;
@@ -149,7 +149,7 @@ public class ExcelBuilderDirect extends ExcelBuilder {
 	        		Object obj=cellInfo.getFormatData();
 	        		if(obj!=null){
 		        		if(obj instanceof String){
-		        			cell.setCellValue((String)obj);     
+		        			cell.setCellValue((String)obj);
 		        			cell.setCellType(CellType.STRING);
 		        		}else if(obj instanceof Number){
 		        			BigDecimal bigDecimal=Utils.toBigDecimal(obj);
@@ -166,23 +166,23 @@ public class ExcelBuilderDirect extends ExcelBuilder {
 		    				int height=bufferedImage.getHeight();
 		    				IOUtils.closeQuietly(inputStream);
 		    				inputStream=ImageUtils.base64DataToInputStream(img.getBase64Data());
-		    				
+
 		    				int leftMargin=0,topMargin=0;
 		    				int wholeWidth=getWholeWidth(columns, i, cellInfo.getColSpan());
 		    				int wholeHeight=getWholeHeight(rows, rowNumber, cellInfo.getRowSpan());
-		    				HorizontalAlignment align=style.getAlignmentEnum();
+		    				HorizontalAlignment align=style.getAlignment();
 		    				if(align.equals(HorizontalAlignment.CENTER)){
 		    					leftMargin=(wholeWidth-width)/2;
 		    				}else if(align.equals(HorizontalAlignment.RIGHT)){
 		    					leftMargin=wholeWidth-width;
 		    				}
-		    				VerticalAlignment valign=style.getVerticalAlignmentEnum();
+		    				VerticalAlignment valign=style.getVerticalAlignment();
 		    				if(valign.equals(VerticalAlignment.CENTER)){
 		    					topMargin=(wholeHeight-height)/2;
 		    				}else if(valign.equals(VerticalAlignment.BOTTOM)){
 		    					topMargin=wholeHeight-height;
 		    				}
-		    				
+
 		        			try{
 		        				XSSFClientAnchor anchor=(XSSFClientAnchor)creationHelper.createClientAnchor();
 		        				byte[] bytes=IOUtils.toByteArray(inputStream);
@@ -192,10 +192,10 @@ public class ExcelBuilderDirect extends ExcelBuilder {
 		        				anchor.setCol2(i+colSpan);
 		        				anchor.setRow1(rowNumber);
 		        				anchor.setRow2(rowNumber+rowSpan);
-		        				anchor.setDx1(leftMargin * XSSFShape.EMU_PER_PIXEL);
-		        				anchor.setDx2(width * XSSFShape.EMU_PER_PIXEL);
-		        				anchor.setDy1(topMargin * XSSFShape.EMU_PER_PIXEL);
-		        				anchor.setDy2(height * XSSFShape.EMU_PER_PIXEL);
+		        				anchor.setDx1(leftMargin * Units.EMU_PER_PIXEL);
+		        				anchor.setDx2(width * Units.EMU_PER_PIXEL);
+		        				anchor.setDy1(topMargin * Units.EMU_PER_PIXEL);
+		        				anchor.setDy2(height * Units.EMU_PER_PIXEL);
 		        				drawing.createPicture(anchor, pictureIndex);
 		        			}finally{
 		        				IOUtils.closeQuietly(inputStream);
@@ -211,24 +211,24 @@ public class ExcelBuilderDirect extends ExcelBuilder {
 		        				int height=bufferedImage.getHeight();
 		        				IOUtils.closeQuietly(inputStream);
 		        				inputStream=ImageUtils.base64DataToInputStream(img.getBase64Data());
-		        				
-			    				
+
+
 			    				int leftMargin=0,topMargin=0;
 			    				int wholeWidth=getWholeWidth(columns, i, cellInfo.getColSpan());
 			    				int wholeHeight=getWholeHeight(rows, rowNumber, cellInfo.getRowSpan());
-			    				HorizontalAlignment align=style.getAlignmentEnum();
+			    				HorizontalAlignment align=style.getAlignment();
 			    				if(align.equals(HorizontalAlignment.CENTER)){
 			    					leftMargin=(wholeWidth-width)/2;
 			    				}else if(align.equals(HorizontalAlignment.RIGHT)){
 			    					leftMargin=wholeWidth-width;
 			    				}
-			    				VerticalAlignment valign=style.getVerticalAlignmentEnum();
+			    				VerticalAlignment valign=style.getVerticalAlignment();
 			    				if(valign.equals(VerticalAlignment.CENTER)){
 			    					topMargin=(wholeHeight-height)/2;
 			    				}else if(valign.equals(VerticalAlignment.BOTTOM)){
 			    					topMargin=wholeHeight-height;
 			    				}
-		        				
+
 		        				try{
 		        					XSSFClientAnchor anchor=(XSSFClientAnchor)creationHelper.createClientAnchor();
 		        					byte[] bytes=IOUtils.toByteArray(inputStream);
@@ -238,10 +238,10 @@ public class ExcelBuilderDirect extends ExcelBuilder {
 		        					anchor.setCol2(i+colSpan);
 		        					anchor.setRow1(rowNumber);
 		        					anchor.setRow2(rowNumber+rowSpan);
-		        					anchor.setDx1(leftMargin * XSSFShape.EMU_PER_PIXEL);
-		        					anchor.setDx2(width * XSSFShape.EMU_PER_PIXEL);
-		        					anchor.setDy1(topMargin * XSSFShape.EMU_PER_PIXEL);
-		        					anchor.setDy2(height * XSSFShape.EMU_PER_PIXEL);
+		        					anchor.setDx1(leftMargin * Units.EMU_PER_PIXEL);
+		        					anchor.setDx2(width * Units.EMU_PER_PIXEL);
+		        					anchor.setDy1(topMargin * Units.EMU_PER_PIXEL);
+		        					anchor.setDy2(height * Units.EMU_PER_PIXEL);
 		        					drawing.createPicture(anchor, pictureIndex);
 		        				}finally{
 		        					IOUtils.closeQuietly(inputStream);
@@ -253,14 +253,14 @@ public class ExcelBuilderDirect extends ExcelBuilder {
 	        		}
 	        	}
 	        	row.setHeight((short)UnitUtils.pointToTwip(r.getRealHeight()));
-	        	rowNumber++;	        		
-			}      		
+	        	rowNumber++;
+			}
 			sheet.setRowBreak(rowNumber-1);
-			wb.write(outputStream);			
+			wb.write(outputStream);
 		}catch(Exception ex){
 			throw new ReportComputeException(ex);
 		}finally{
-			wb.dispose();			
+			wb.dispose();
 		}
 	}
 }

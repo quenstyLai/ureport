@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -97,9 +97,9 @@ public class XSSFExcelParser extends ExcelParser {
 					continue;
 				}
 				Span span=getSpan(sheet, i, j);
-				
+
 				Object value=null;
-				CellType cellType=cell.getCellTypeEnum();
+				CellType cellType=cell.getCellType();
 				switch(cellType){
 				case STRING:
 					value=cell.getStringCellValue();
@@ -149,7 +149,7 @@ public class XSSFExcelParser extends ExcelParser {
 	private CellStyle buildCellStyle(XSSFCell cell,XSSFWorkbook book){
 		CellStyle style=new CellStyle();
 		XSSFCellStyle cellStyle=cell.getCellStyle();
-		HorizontalAlignment align=cellStyle.getAlignmentEnum();
+		HorizontalAlignment align=cellStyle.getAlignment();
 		if(align.equals(HorizontalAlignment.CENTER)){
 			style.setAlign(Alignment.center);
 		}else if(align.equals(HorizontalAlignment.RIGHT)){
@@ -157,7 +157,7 @@ public class XSSFExcelParser extends ExcelParser {
 		}else{
 			style.setAlign(Alignment.left);
 		}
-		VerticalAlignment valign=cellStyle.getVerticalAlignmentEnum();
+		VerticalAlignment valign=cellStyle.getVerticalAlignment();
 		if(valign.equals(VerticalAlignment.BOTTOM)){
 			style.setValign(Alignment.bottom);
 		}else if(valign.equals(VerticalAlignment.TOP)){
@@ -182,19 +182,19 @@ public class XSSFExcelParser extends ExcelParser {
 			String rgb=color.getARGBHex();
 			style.setForecolor(hex2Rgb(rgb));
 		}else{
-			style.setForecolor("0,0,0");			
+			style.setForecolor("0,0,0");
 		}
-		FillPatternType pattern=cellStyle.getFillPatternEnum();
+		FillPatternType pattern=cellStyle.getFillPattern();
 		if(pattern!=null && pattern.equals(FillPatternType.SOLID_FOREGROUND)){
 			XSSFColor bgcolor=cellStyle.getFillForegroundColorColor();
 			if(bgcolor!=null){
 				String hex=bgcolor.getARGBHex();
-				style.setBgcolor(hex2Rgb(hex));					
+				style.setBgcolor(hex2Rgb(hex));
 			}
 		}
 		int fontSize=font.getFontHeight()/20;
 		style.setFontSize(fontSize);
-		BorderStyle borderStyle=cellStyle.getBorderLeftEnum();
+		BorderStyle borderStyle=cellStyle.getBorderLeft();
 		if(!borderStyle.equals(BorderStyle.NONE)){
 			Border border=new Border();
 			border.setColor("0,0,0");
@@ -202,7 +202,7 @@ public class XSSFExcelParser extends ExcelParser {
 			border.setWidth(1);
 			style.setLeftBorder(border);
 		}
-		borderStyle=cellStyle.getBorderRightEnum();
+		borderStyle=cellStyle.getBorderRight();
 		if(!borderStyle.equals(BorderStyle.NONE)){
 			Border border=new Border();
 			border.setColor("0,0,0");
@@ -210,7 +210,7 @@ public class XSSFExcelParser extends ExcelParser {
 			border.setWidth(1);
 			style.setRightBorder(border);
 		}
-		borderStyle=cellStyle.getBorderTopEnum();
+		borderStyle=cellStyle.getBorderTop();
 		if(!borderStyle.equals(BorderStyle.NONE)){
 			Border border=new Border();
 			border.setColor("0,0,0");
@@ -218,7 +218,7 @@ public class XSSFExcelParser extends ExcelParser {
 			border.setWidth(1);
 			style.setTopBorder(border);
 		}
-		borderStyle=cellStyle.getBorderBottomEnum();
+		borderStyle=cellStyle.getBorderBottom();
 		if(!borderStyle.equals(BorderStyle.NONE)){
 			Border border=new Border();
 			border.setColor("0,0,0");
@@ -234,15 +234,15 @@ public class XSSFExcelParser extends ExcelParser {
 				Integer.valueOf( colorStr.substring( 4, 6 ), 16 )+","+
 	            Integer.valueOf( colorStr.substring( 6, 8 ), 16 );
 	}
-	
+
 	private Span getSpan(XSSFSheet sheet,int row ,int column){
-		int sheetMergeCount = sheet.getNumMergedRegions(); 
+		int sheetMergeCount = sheet.getNumMergedRegions();
 		for (int i = 0; i < sheetMergeCount; i++) {
 			CellRangeAddress range = sheet.getMergedRegion(i);
 			int firstColumn = range.getFirstColumn();
 			int lastColumn = range.getLastColumn();
 			int firstRow = range.getFirstRow();
-			if(row == firstRow && column==firstColumn){  
+			if(row == firstRow && column==firstColumn){
 				int lastRow = range.getLastRow();
 				int rowSpan=lastRow-firstRow;
 				if(rowSpan>0){
@@ -274,7 +274,7 @@ public class XSSFExcelParser extends ExcelParser {
 		}
 		return false;
 	}
-	
+
 	private int buildMaxColumn(XSSFSheet sheet){
 		int rowCount=sheet.getPhysicalNumberOfRows();
 		int maxColumnCount=0;
@@ -290,7 +290,7 @@ public class XSSFExcelParser extends ExcelParser {
 		}
 		return maxColumnCount;
 	}
-	
+
 	protected void addBlankCells(List<CellDefinition> cellDefs,int rowNumber,int totalColumn){
 		for(int i=0;i<totalColumn;i++){
 			CellDefinition cellDef=new CellDefinition();
@@ -300,7 +300,7 @@ public class XSSFExcelParser extends ExcelParser {
 			cellDefs.add(cellDef);
 		}
 	}
-	
+
 	@Override
 	public boolean support(String name) {
 		return name.toLowerCase().endsWith(".xlsx");

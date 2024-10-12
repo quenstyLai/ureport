@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -63,7 +63,7 @@ public abstract class BaseServletAction implements ServletAction {
 			return content;
 		}
 	}
-	
+
 	protected Map<String, Object> buildParameters(HttpServletRequest req) {
 		Map<String,Object> parameters=new HashMap<String,Object>();
 		Enumeration<?> enumeration=req.getParameterNames();
@@ -81,16 +81,17 @@ public abstract class BaseServletAction implements ServletAction {
 		}
 		return parameters;
 	}
-	
+
 	protected void invokeMethod(String methodName,HttpServletRequest req,HttpServletResponse resp) throws ServletException{
 		try{
-			Method method=this.getClass().getMethod(methodName, new Class<?>[]{HttpServletRequest.class,HttpServletResponse.class});			
+			Method method=this.getClass().getMethod(methodName, new Class<?>[]{HttpServletRequest.class,HttpServletResponse.class});
 			method.invoke(this, new Object[]{req,resp});
 		}catch(Exception ex){
+			ex.printStackTrace();
 			throw new ServletException(ex);
 		}
 	}
-	
+
 	protected String retriveMethod(HttpServletRequest req) throws ServletException{
 		String path=req.getContextPath()+UReportServlet.URL;
 		String uri=req.getRequestURI();
@@ -102,7 +103,7 @@ public abstract class BaseServletAction implements ServletAction {
 		}
 		return null;
 	}
-	
+
 	protected String buildDownloadFileName(String reportFileName,String fileName,String extName){
 		if(StringUtils.isNotBlank(fileName)){
 			fileName=decode(fileName);

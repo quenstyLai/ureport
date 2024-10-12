@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -46,24 +46,26 @@ public class ExportExcelServletAction extends BaseServletAction {
 	private ReportBuilder reportBuilder;
 	private ExportManager exportManager;
 	private ExcelProducer excelProducer=new ExcelProducer();
-	
+
+
+
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String method=retriveMethod(req);
 		if(method!=null){
 			invokeMethod(method, req, resp);
-		}else{			
+		}else{
 			buildExcel(req, resp,false,false);
 		}
 	}
 	public void paging(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		buildExcel(req, resp, true, false);
 	}
-	
+
 	public void sheet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		buildExcel(req, resp, false, true);
 	}
-	
+
 	public void buildExcel(HttpServletRequest req, HttpServletResponse resp,boolean withPage,boolean withSheet) throws IOException {
 		String file=req.getParameter("_u");
 		file=decode(file);
@@ -83,13 +85,13 @@ public class ExportExcelServletAction extends BaseServletAction {
 				if(reportDefinition==null){
 					throw new ReportDesignException("Report data has expired,can not do export excel.");
 				}
-				Report report=reportBuilder.buildReport(reportDefinition, parameters);	
+				Report report=reportBuilder.buildReport(reportDefinition, parameters);
 				if(withPage){
 					excelProducer.produceWithPaging(report, outputStream);
 				}else if(withSheet){
 					excelProducer.produceWithSheet(report, outputStream);
 				}else{
-					excelProducer.produce(report, outputStream);				
+					excelProducer.produce(report, outputStream);
 				}
 			}else{
 				ExportConfigure configure=new ExportConfigureImpl(file,parameters,outputStream);
@@ -102,13 +104,14 @@ public class ExportExcelServletAction extends BaseServletAction {
 				}
 			}
 		}catch(Exception ex) {
+			ex.printStackTrace();
 			throw new ReportException(ex);
 		}finally {
 			outputStream.flush();
-			outputStream.close();			
+			outputStream.close();
 		}
 	}
-	
+
 	public void setReportBuilder(ReportBuilder reportBuilder) {
 		this.reportBuilder = reportBuilder;
 	}
