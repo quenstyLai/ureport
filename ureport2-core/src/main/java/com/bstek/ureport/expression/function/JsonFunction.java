@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.alibaba.fastjson2.JSONObject;
 
 import com.bstek.ureport.Utils;
 import com.bstek.ureport.build.BindData;
@@ -44,13 +44,12 @@ public class JsonFunction implements Function {
 		}
 		String obj = buildData(dataList.get(0));
 		String property=buildData(dataList.get(1));
-		
+
 		if(obj==null || property==null || obj.equals("") || property.equals("")){
 			return null;
 		}
-		ObjectMapper mapper=new ObjectMapper();
 		try{
-			Map<?,?> map=mapper.readValue(obj, HashMap.class);
+			Map<?,?> map = JSONObject.parseObject(obj,HashMap.class);
 			return Utils.getProperty(map, property);
 		}catch(Exception ex){
 			throw new ReportException(ex);

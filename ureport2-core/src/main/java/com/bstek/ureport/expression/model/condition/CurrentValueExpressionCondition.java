@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -15,8 +15,9 @@
  ******************************************************************************/
 package com.bstek.ureport.expression.model.condition;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
+
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.bstek.ureport.build.Context;
 import com.bstek.ureport.expression.model.Expression;
 import com.bstek.ureport.expression.model.data.ExpressionData;
@@ -28,7 +29,7 @@ import com.bstek.ureport.model.Cell;
  */
 public class CurrentValueExpressionCondition extends BaseCondition {
 	private ConditionType type=ConditionType.current;
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private Expression rightExpression;
 	@Override
 	Object computeLeft(Cell cell,Cell currentCell,Object obj,Context context) {
@@ -40,7 +41,7 @@ public class CurrentValueExpressionCondition extends BaseCondition {
 		ExpressionData<?> exprData=rightExpression.execute(cell, currentCell,context);
 		return extractExpressionData(exprData);
 	}
-	
+
 	@Override
 	public ConditionType getType() {
 		return type;

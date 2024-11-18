@@ -17,14 +17,13 @@ package com.bstek.ureport.console;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import com.alibaba.fastjson2.JSONObject;
 
 
 /**
@@ -35,15 +34,10 @@ public abstract class WriteJsonServletAction extends BaseServletAction{
 	protected void writeObjectToJson(HttpServletResponse resp,Object obj) throws ServletException, IOException{
 		resp.setContentType("text/json");
 		resp.setCharacterEncoding("UTF-8");
-		ObjectMapper mapper=new ObjectMapper();
-		// 兼容org.codehaus.jackson:jackson-mapper-asl:1.8.7
-		mapper.getSerializationConfig().setSerializationInclusion(Inclusion.NON_NULL);
-//		mapper.setSerializationInclusion(Inclusion.NON_NULL);
-		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS,false);
-		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+		byte[] bytes = JSONObject.toJSONString(obj).getBytes(StandardCharsets.UTF_8);
 		OutputStream out = resp.getOutputStream();
 		try {
-			mapper.writeValue(out, obj);
+			out.write(bytes);
 		} finally {
 			out.flush();
 			out.close();

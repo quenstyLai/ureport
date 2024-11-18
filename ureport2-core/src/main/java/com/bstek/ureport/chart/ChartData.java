@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -15,8 +15,9 @@
  ******************************************************************************/
 package com.bstek.ureport.chart;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
+
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.bstek.ureport.cache.CacheUtils;
 import com.bstek.ureport.model.Cell;
 
@@ -27,11 +28,11 @@ import com.bstek.ureport.model.Cell;
 public class ChartData {
 	private String id;
 	private String json;
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private String base64Data;
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private int width;
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private int height;
 	public ChartData(String json,Cell cell) {
 		this.json=json;
@@ -43,7 +44,7 @@ public class ChartData {
 	public void setBase64Data(String base64Data) {
 		this.base64Data = base64Data;
 	}
-	
+
 	public String retriveBase64Data(){
 		if(base64Data!=null){
 			return base64Data;

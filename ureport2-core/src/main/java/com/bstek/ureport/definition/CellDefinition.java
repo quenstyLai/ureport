@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.bstek.ureport.Range;
 import com.bstek.ureport.definition.value.Value;
 import com.bstek.ureport.expression.model.Expression;
@@ -42,31 +42,31 @@ public class CellDefinition implements Serializable{
 	private String name;
 	private Value value;
 	private CellStyle cellStyle=new CellStyle();
-	
+
 	private String linkUrl;
 	private String linkTargetWindow;
 	private List<LinkParameter> linkParameters;
-	
-	@JsonIgnore
+
+	@JSONField(serialize = false)
 	private Expression linkUrlExpression;
-	
+
 	private boolean fillBlankRows;
 	/**
 	 * 允许填充空白行时fillBlankRows=true，要求当前数据行数必须是multiple定义的行数的倍数，否则就补充空白行
 	 */
 	private int multiple;
-	
+
 	private Expand expand=Expand.None;
-	
-	@JsonIgnore
+
+	@JSONField(serialize = false)
 	private Range duplicateRange;
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private List<String> increaseSpanCellNames=new ArrayList<String>();
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private Map<String,BlankCellInfo> newBlankCellsMap=new HashMap<String,BlankCellInfo>();
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private List<String> newCellNames=new ArrayList<String>();
-	
+
 	/**
 	 * 当前单元格左父格名
 	 */
@@ -78,26 +78,26 @@ public class CellDefinition implements Serializable{
 	/**
 	 * 当前单元格左父格
 	 */
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private CellDefinition leftParentCell;
 	/**
 	 * 当前单元格上父格
 	 */
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private CellDefinition topParentCell;
 	/**
 	 * 当前单无格所在行的所有子格
 	 */
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private List<CellDefinition> rowChildrenCells=new ArrayList<CellDefinition>();
 	/**
 	 * 当前单无格所在列的所有子格
 	 */
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private List<CellDefinition> columnChildrenCells=new ArrayList<CellDefinition>();
-	
+
 	private List<ConditionPropertyItem> conditionPropertyItems;
-	
+
 	protected Cell newCell(){
 		Cell cell=new Cell();
 		cell.setValue(value);
@@ -151,7 +151,7 @@ public class CellDefinition implements Serializable{
 	public void setValue(Value value) {
 		this.value = value;
 	}
-	
+
 	public int getRowSpan() {
 		return rowSpan;
 	}
@@ -175,7 +175,7 @@ public class CellDefinition implements Serializable{
 	public void setExpand(Expand expand) {
 		this.expand = expand;
 	}
-	
+
 	public String getLeftParentCellName() {
 		return leftParentCellName;
 	}
@@ -211,7 +211,7 @@ public class CellDefinition implements Serializable{
 	public CellStyle getCellStyle() {
 		return cellStyle;
 	}
-	
+
 	public boolean isFillBlankRows() {
 		return fillBlankRows;
 	}
@@ -231,7 +231,7 @@ public class CellDefinition implements Serializable{
 	public Range getDuplicateRange() {
 		return duplicateRange;
 	}
-	
+
 	public void setDuplicateRange(Range duplicateRange) {
 		this.duplicateRange = duplicateRange;
 	}

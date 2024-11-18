@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -21,8 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 import com.bstek.ureport.build.Dataset;
 import com.bstek.ureport.definition.datasource.DatasourceDefinition;
@@ -51,7 +52,7 @@ public class ReportDefinition implements Serializable{
 	private List<ColumnDefinition> columns;
 	private List<DatasourceDefinition> datasources;
 	private String searchFormXml;
-	@JsonIgnore
+	@JSONField(serialize = false)
 	private String style;
 
 	public Report newReport() {
@@ -107,7 +108,7 @@ public class ReportDefinition implements Serializable{
 			Column targetColumn=columnMap.get(cellDef.getColumnNumber());
 			cell.setColumn(targetColumn);
 			targetColumn.getCells().add(cell);
-			
+
 			if(cellDef.getLeftParentCell()==null && cellDef.getTopParentCell()==null){
 				report.setRootCell(cell);
 			}
@@ -130,7 +131,7 @@ public class ReportDefinition implements Serializable{
 		}
 		for (CellDefinition cellDef : cells) {
 			Cell targetCell=cellMap.get(cellDef);
-			
+
 			List<CellDefinition> rowChildrenCellDefinitions=cellDef.getRowChildrenCells();
 			for(CellDefinition childCellDef:rowChildrenCellDefinitions){
 				Cell childCell=cellMap.get(childCellDef);
@@ -144,14 +145,14 @@ public class ReportDefinition implements Serializable{
 		}
 		return report;
 	}
-	
+
 	public String getStyle() {
 		if(style==null){
 			style=buildStyle();
 		}
 		return style;
 	}
-	
+
 	private String buildStyle(){
 		StringBuffer sb=new StringBuffer();
 		for(CellDefinition cell:cells){
@@ -161,11 +162,11 @@ public class ReportDefinition implements Serializable{
 			sb.append("width:"+colWidth+"pt;");
 			Alignment align=cellStyle.getAlign();
 			if(align!=null){
-				sb.append("text-align:"+align.name()+";");				
+				sb.append("text-align:"+align.name()+";");
 			}
 			Alignment valign=cellStyle.getValign();
 			if(valign!=null){
-				sb.append("vertical-align:"+valign.name()+";");				
+				sb.append("vertical-align:"+valign.name()+";");
 			}
 			float lineHeight=cellStyle.getLineHeight();
 			if(lineHeight>0){
@@ -173,49 +174,49 @@ public class ReportDefinition implements Serializable{
 			}
 			String bgcolor=cellStyle.getBgcolor();
 			if(StringUtils.isNotBlank(bgcolor)){
-				sb.append("background-color:rgb("+bgcolor+");");				
+				sb.append("background-color:rgb("+bgcolor+");");
 			}
 			String fontFamilty=cellStyle.getFontFamily();
 			if(StringUtils.isNotBlank(fontFamilty)){
-				sb.append("font-family:"+fontFamilty+";");				
+				sb.append("font-family:"+fontFamilty+";");
 			}
 			int fontSize=cellStyle.getFontSize();
 			sb.append("font-size:"+fontSize+"pt;");
 			String foreColor=cellStyle.getForecolor();
 			if(StringUtils.isNotBlank(foreColor)){
-				sb.append("color:rgb("+foreColor+");");				
+				sb.append("color:rgb("+foreColor+");");
 			}
 			Boolean bold=cellStyle.getBold(),italic=cellStyle.getItalic(),underline=cellStyle.getUnderline();
 			if(bold!=null && bold){
-				sb.append("font-weight:bold;");								
+				sb.append("font-weight:bold;");
 			}
 			if(italic!=null && italic){
-				sb.append("font-style:italic;");												
+				sb.append("font-style:italic;");
 			}
 			if(underline!=null && underline){
-				sb.append("text-decoration:underline;");												
+				sb.append("text-decoration:underline;");
 			}
 			Border border=cellStyle.getLeftBorder();
 			if(border!=null){
-				sb.append("border-left:"+border.getStyle().name()+" "+border.getWidth()+"px rgb("+border.getColor()+");");				
+				sb.append("border-left:"+border.getStyle().name()+" "+border.getWidth()+"px rgb("+border.getColor()+");");
 			}
 			border=cellStyle.getRightBorder();
 			if(border!=null){
-				sb.append("border-right:"+border.getStyle().name()+" "+border.getWidth()+"px rgb("+border.getColor()+");");				
+				sb.append("border-right:"+border.getStyle().name()+" "+border.getWidth()+"px rgb("+border.getColor()+");");
 			}
 			border=cellStyle.getTopBorder();
 			if(border!=null){
-				sb.append("border-top:"+border.getStyle().name()+" "+border.getWidth()+"px rgb("+border.getColor()+");");				
+				sb.append("border-top:"+border.getStyle().name()+" "+border.getWidth()+"px rgb("+border.getColor()+");");
 			}
 			border=cellStyle.getBottomBorder();
 			if(border!=null){
-				sb.append("border-bottom:"+border.getStyle().name()+" "+border.getWidth()+"px rgb("+border.getColor()+");");				
+				sb.append("border-bottom:"+border.getStyle().name()+" "+border.getWidth()+"px rgb("+border.getColor()+");");
 			}
 			sb.append("}");
 		}
 		return sb.toString();
 	}
-	
+
 	public SearchFormData buildSearchFormData(Map<String,Dataset> datasetMap,Map<String, Object> parameters){
 		if(searchForm==null){
 			return null;
@@ -228,7 +229,7 @@ public class ReportDefinition implements Serializable{
 		data.setSearchFormXml(searchFormXml);
 		return data;
 	}
-	
+
 	private int getColumnWidth(int columnNumber,int colSpan){
 		int width=0;
 		if(colSpan>0)colSpan--;
@@ -238,7 +239,7 @@ public class ReportDefinition implements Serializable{
 				if(col.getColumnNumber()==i){
 					width+=col.getWidth();
 				}
-			}			
+			}
 		}
 		return width;
 	}

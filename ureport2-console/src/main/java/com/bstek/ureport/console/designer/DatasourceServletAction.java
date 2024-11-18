@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -38,11 +38,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.alibaba.fastjson2.JSON;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -82,7 +80,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 			invokeMethod(method, req, resp);
 		}
 	}
-	
+
 	public void loadBuildinDatasources(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<String> datasources=new ArrayList<String>();
 		for(BuildinDatasource datasource:Utils.getBuildinDatasources()){
@@ -90,7 +88,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 		}
 		writeObjectToJson(resp, datasources);
 	}
-	
+
 	public void loadMethods(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String beanId=req.getParameter("beanId");
 		Object obj=applicationContext.getBean(beanId);
@@ -118,7 +116,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 		}
 		writeObjectToJson(resp, result);
 	}
-	
+
 	public void buildClass(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String clazz=req.getParameter("clazz");
 		List<Field> result=new ArrayList<Field>();
@@ -137,7 +135,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 			throw new ReportDesignException(ex);
 		}
 	}
-	
+
 	public void buildDatabaseTables(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Connection conn=null;
 		ResultSet rs = null;
@@ -165,7 +163,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 			JdbcUtils.closeConnection(conn);
 		}
 	}
-	
+
 	public void buildFields(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String sql=req.getParameter("sql");
 		String parameters=req.getParameter("parameters");
@@ -208,7 +206,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 			JdbcUtils.closeConnection(conn);
 		}
 	}
-	
+
 	protected PreparedStatementCreator getPreparedStatementCreator(String sql, SqlParameterSource paramSource) {
 		ParsedSql parsedSql = NamedParameterUtils.parseSqlStatement(sql);
 		String sqlToUse = NamedParameterUtils.substituteNamedParameters(parsedSql, paramSource);
@@ -232,7 +230,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 			}else{
 				DataSource dataSource=new SingleConnectionDataSource(conn,false);
 				NamedParameterJdbcTemplate jdbc=new NamedParameterJdbcTemplate(dataSource);
-				list=jdbc.queryForList(sql, map);				
+				list=jdbc.queryForList(sql, map);
 			}
 			int size=list.size();
 			int currentTotal=size;
@@ -268,7 +266,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 			}
 		}
 	}
-	
+
 	private String parseSql(String sql,Map<String,Object> parameters){
 		sql=sql.trim();
 		Context context=new Context(applicationContext, parameters);
@@ -292,7 +290,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 			return sqlForUse;
 		}
 	}
-	
+
 	private String executeSqlExpr(Expression sqlExpr,Context context){
 		String sqlForUse=null;
 		ExpressionData<?> exprData=sqlExpr.execute(null, null, context);
@@ -307,7 +305,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 		}
 		return sqlForUse;
 	}
-	
+
 	public void testConnection(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String username=req.getParameter("username");
 		String password=req.getParameter("password");
@@ -333,15 +331,14 @@ public class DatasourceServletAction extends RenderPageServletAction {
 		}
 		writeObjectToJson(resp, map);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private Map<String, Object> buildParameters(String parameters) throws IOException, JsonParseException, JsonMappingException {
+	private Map<String, Object> buildParameters(String parameters) throws IOException{
 		Map<String,Object> map=new HashMap<String,Object>();
 		if(StringUtils.isBlank(parameters)){
 			return map;
 		}
-		ObjectMapper mapper=new ObjectMapper();
-		List<Map<String,Object>> list=mapper.readValue(parameters, ArrayList.class);
+		List<Map<String,Object>> list= JSON.parseObject(parameters, List.class);
 		for(Map<String,Object> param:list){
 			String name=param.get("name").toString();
 			DataType type=DataType.valueOf(param.get("type").toString());
@@ -358,29 +355,29 @@ public class DatasourceServletAction extends RenderPageServletAction {
 					map.put(name, 0);
 				case String:
 					if(defaultValue!=null && defaultValue.equals("")){
-						map.put(name, "");						
+						map.put(name, "");
 					}else{
-						map.put(name, "null");						
+						map.put(name, "null");
 					}
 					break;
 				case List:
 					map.put(name, new ArrayList<Object>());
-				}				
+				}
 			}else{
-				map.put(name, type.parse(defaultValue));			
+				map.put(name, type.parse(defaultValue));
 			}
 		}
 		return map;
 	}
-	
+
 	private Connection buildConnection(HttpServletRequest req) throws Exception{
 		String type=req.getParameter("type");
-		if(type.equals("jdbc")){			
+		if(type.equals("jdbc")){
 			String username=req.getParameter("username");
 			String password=req.getParameter("password");
 			String driver=req.getParameter("driver");
 			String url=req.getParameter("url");
-			
+
 			Class.forName(driver);
 			Connection conn=DriverManager.getConnection(url, username, password);
 			return conn;
@@ -393,7 +390,7 @@ public class DatasourceServletAction extends RenderPageServletAction {
 			return conn;
 		}
 	}
-	
+
 	@Override
 	public String url() {
 		return "/datasource";

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -18,8 +18,9 @@ package com.bstek.ureport.definition;
 import java.awt.Font;
 import java.io.Serializable;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 import com.bstek.ureport.export.pdf.font.FontBuilder;
 
@@ -46,7 +47,7 @@ public class CellStyle implements Serializable{
 	private Border rightBorder;
 	private Border topBorder;
 	private Border bottomBorder;
-	
+
 	private Font font;
 
 	public Border getLeftBorder() {
@@ -181,16 +182,16 @@ public class CellStyle implements Serializable{
 		this.lineHeight = lineHeight;
 	}
 
-	@JsonIgnore
+	@JSONField(serialize = false)
 	public Font getFont(){
 		if(this.font==null){
 			int fontStyle=Font.PLAIN;
 			if((bold!=null && bold) && (italic!=null && italic)){
-				fontStyle=Font.BOLD|Font.ITALIC;				
+				fontStyle=Font.BOLD|Font.ITALIC;
 			}else if(bold!=null && bold){
-				fontStyle=Font.BOLD;							
+				fontStyle=Font.BOLD;
 			}else if(italic!=null && italic){
-				fontStyle=Font.ITALIC;							
+				fontStyle=Font.ITALIC;
 			}
 			String fontName=fontFamily;
 			if(StringUtils.isBlank(fontName)){

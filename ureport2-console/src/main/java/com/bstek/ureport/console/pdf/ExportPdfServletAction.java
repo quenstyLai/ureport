@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -23,8 +23,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson2.JSON;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import com.bstek.ureport.build.ReportBuilder;
 import com.bstek.ureport.console.BaseServletAction;
@@ -55,7 +55,7 @@ public class ExportPdfServletAction extends BaseServletAction{
 		String method=retriveMethod(req);
 		if(method!=null){
 			invokeMethod(method, req, resp);
-		}else{			
+		}else{
 			buildPdf(req, resp,false);
 		}
 	}
@@ -88,20 +88,20 @@ public class ExportPdfServletAction extends BaseServletAction{
 				if(reportDefinition==null){
 					throw new ReportDesignException("Report data has expired,can not do export pdf.");
 				}
-				Report report=reportBuilder.buildReport(reportDefinition, parameters);	
+				Report report=reportBuilder.buildReport(reportDefinition, parameters);
 				pdfProducer.produce(report, outputStream);
 			}else{
 				ExportConfigure configure=new ExportConfigureImpl(file,parameters,outputStream);
 				exportManager.exportPdf(configure);
-			}			
+			}
 		}catch(Exception ex) {
 			throw new ReportException(ex);
-		}finally {			
+		}finally {
 			outputStream.flush();
 			outputStream.close();
 		}
 	}
-	
+
 	public void newPaging(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String file=req.getParameter("_u");
 		if(StringUtils.isBlank(file)){
@@ -114,25 +114,25 @@ public class ExportPdfServletAction extends BaseServletAction{
 			if(reportDefinition==null){
 				throw new ReportDesignException("Report data has expired,can not do export pdf.");
 			}
-			report=reportBuilder.buildReport(reportDefinition, parameters);	
+			report=reportBuilder.buildReport(reportDefinition, parameters);
 		}else{
 			ReportDefinition reportDefinition=reportRender.getReportDefinition(file);
 			report=reportRender.render(reportDefinition, parameters);
 		}
 		String paper=req.getParameter("_paper");
-		ObjectMapper mapper=new ObjectMapper();
-		Paper newPaper=mapper.readValue(paper, Paper.class);
+		Paper newPaper= JSON.parseObject(paper, Paper.class);
+
 		report.rePaging(newPaper);
 	}
-	
+
 	public void setReportRender(ReportRender reportRender) {
 		this.reportRender = reportRender;
 	}
-	
+
 	public void setExportManager(ExportManager exportManager) {
 		this.exportManager = exportManager;
 	}
-	
+
 	public void setReportBuilder(ReportBuilder reportBuilder) {
 		this.reportBuilder = reportBuilder;
 	}

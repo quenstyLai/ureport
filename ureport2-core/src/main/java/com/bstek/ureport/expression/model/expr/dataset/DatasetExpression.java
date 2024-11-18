@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.bstek.ureport.build.BindData;
 import com.bstek.ureport.build.Context;
 import com.bstek.ureport.build.DatasetUtils;
@@ -48,33 +48,33 @@ public class DatasetExpression extends BaseExpression {
 	 * 当aggregate类型为自定义分组时，采用此属性来存储自定义分组各个项目
 	 */
 	private List<GroupItem> groupItems;
-	
+
 	private MappingType mappingType=MappingType.simple;
-	
+
 	private String mappingDataset;
 	private String mappingKeyProperty;
 	private String mappingValueProperty;
-	
+
 	private List<MappingItem> mappingItems;
-	
-	@JsonIgnore 
+
+	@JSONField(serialize = false)
 	private Condition condition;
-	
-	@JsonIgnore 
+
+	@JSONField(serialize = false)
 	private Map<String,String> mapping=null;
-	
+
 	/**
 	 * 此属性给设计器使用，引擎不使用该属性
 	 */
 	private List<Condition> conditions;
 	private Order order;
-	
+
 	@Override
 	public ExpressionData<?> compute(Cell cell,Cell currentCell,Context context) {
 		List<BindData> bindDataList=DatasetUtils.computeDatasetExpression(this, cell, context);
 		return new BindDataListExpressionData(bindDataList);
 	}
-	
+
 	public String getDatasetName() {
 		return datasetName;
 	}
@@ -140,10 +140,10 @@ public class DatasetExpression extends BaseExpression {
 			mapping=new HashMap<String,String>();
 			for(MappingItem item:mappingItems){
 				mapping.put(item.getValue(),item.getLabel());
-			}				
+			}
 		}
 	}
-	
+
 	public MappingType getMappingType() {
 		return mappingType;
 	}
